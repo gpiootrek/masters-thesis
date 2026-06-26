@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Annotator Klasyfikacji Newsów</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        --card-bg: rgba(255, 255, 255, 0.06);
+        --card-border: rgba(255, 255, 255, 0.12);
+        --accent: #7c6cff;
+        --accent-hover: #9d8fff;
+        --text-primary: #f0eeff;
+        --text-secondary: rgba(255, 255, 255, 0.55);
+        --success: #2dd4a8;
+        --warning: #f5a623;
+        --danger: #ff6b6b;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        background: var(--bg-gradient);
+        min-height: 100vh;
+        color: var(--text-primary);
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      }
+
+      .navbar-custom {
+        background: rgba(15, 12, 41, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--card-border);
+      }
+
+      .navbar-custom .navbar-brand {
+        color: var(--text-primary);
+        font-weight: 700;
+        font-size: 1.3rem;
+        letter-spacing: -0.02em;
+      }
+
+      .navbar-custom .nav-link {
+        color: var(--text-secondary);
+        transition: color 0.2s;
+      }
+
+      .navbar-custom .nav-link:hover,
+      .navbar-custom .nav-link.active {
+        color: var(--accent-hover);
+      }
+
+      .article-box {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        padding: 2rem;
+        border-radius: 16px;
+        backdrop-filter: blur(8px);
+      }
+
+      .article-box p.fs-5 {
+        color: var(--text-primary);
+        line-height: 1.8;
+      }
+
+      .article-box hr {
+        border-color: var(--card-border);
+      }
+
+      .badge-llm {
+        cursor: help;
+        font-size: 0.85rem;
+        padding: 0.45em 0.85em;
+        border-radius: 8px;
+      }
+
+      .badge-bielik {
+        background: rgba(91, 155, 255, 0.15);
+        color: #5b9bff;
+        border: 1px solid rgba(91, 155, 255, 0.25);
+      }
+
+      .badge-gemma {
+        background: rgba(245, 166, 35, 0.15);
+        color: #f5a623;
+        border: 1px solid rgba(245, 166, 35, 0.25);
+      }
+
+      .progress-badge {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .progress-badge strong {
+        color: var(--accent-hover);
+      }
+
+      .category-badge {
+        background: rgba(124, 108, 255, 0.15);
+        color: var(--accent-hover);
+        border: 1px solid rgba(124, 108, 255, 0.25);
+        font-size: 1rem;
+        padding: 0.4em 0.9em;
+        border-radius: 8px;
+      }
+
+      /* Radio button group styling */
+      .btn-check + .btn {
+        border-radius: 10px !important;
+        padding: 0.55rem 1.3rem;
+        font-weight: 500;
+        border-width: 1px;
+        transition: all 0.2s;
+      }
+
+      .btn-outline-danger {
+        color: #ff6b6b;
+        border-color: rgba(255, 107, 107, 0.3);
+      }
+      .btn-outline-danger:hover, .btn-check:checked + .btn-outline-danger {
+        background: rgba(255, 107, 107, 0.15);
+        border-color: #ff6b6b;
+        color: #ff6b6b;
+      }
+
+      .btn-outline-secondary {
+        color: #b8b8b8;
+        border-color: rgba(184, 184, 184, 0.3);
+      }
+      .btn-outline-secondary:hover, .btn-check:checked + .btn-outline-secondary {
+        background: rgba(184, 184, 184, 0.15);
+        border-color: #b8b8b8;
+        color: #b8b8b8;
+      }
+
+      .btn-outline-success {
+        color: var(--success);
+        border-color: rgba(45, 212, 168, 0.3);
+      }
+      .btn-outline-success:hover, .btn-check:checked + .btn-outline-success {
+        background: rgba(45, 212, 168, 0.15);
+        border-color: var(--success);
+        color: var(--success);
+      }
+
+      .btn-outline-primary {
+        color: #5b9bff;
+        border-color: rgba(91, 155, 255, 0.3);
+      }
+      .btn-outline-primary:hover, .btn-check:checked + .btn-outline-primary {
+        background: rgba(91, 155, 255, 0.15);
+        border-color: #5b9bff;
+        color: #5b9bff;
+      }
+
+      .btn-outline-dark {
+        color: #ff7b7b;
+        border-color: rgba(255, 123, 123, 0.3);
+      }
+      .btn-outline-dark:hover, .btn-check:checked + .btn-outline-dark {
+        background: rgba(255, 123, 123, 0.15);
+        border-color: #ff7b7b;
+        color: #ff7b7b;
+      }
+
+      .btn-submit {
+        background: var(--accent);
+        border: none;
+        color: #fff;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: all 0.2s;
+      }
+
+      .btn-submit:hover {
+        background: var(--accent-hover);
+        color: #fff;
+        transform: translateY(-1px);
+      }
+
+      h4, h5 {
+        color: var(--text-primary);
+      }
+
+      .text-muted {
+        color: var(--text-secondary) !important;
+      }
+
+      .btn-group {
+        gap: 0.5rem;
+      }
+
+      .dataset-info {
+        background: rgba(124, 108, 255, 0.08);
+        border: 1px solid rgba(124, 108, 255, 0.2);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        color: var(--accent-hover);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'datasets_list' %}">
+          <i class="bi bi-journals me-2"></i>Annotator
+        </a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="{% url 'datasets_list' %}">
+            <i class="bi bi-grid-3x3-gap me-1"></i>Zestawy
+          </a>
+          <a class="nav-link" href="{% url 'upload_csv' %}">
+            <i class="bi bi-cloud-upload me-1"></i>Wgraj CSV
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <div>
+          <h2 class="mb-1">
+            Kategoria:
+            <span class="category-badge">{{ article.category }}</span>
+          </h2>
+          {% if dataset %}
+            <div class="dataset-info mt-2">
+              <i class="bi bi-folder2-open me-1"></i>Zestaw: <strong>{{ dataset.name }}</strong>
+            </div>
+          {% endif %}
+        </div>
+        <div class="progress-badge">
+          Postęp: <strong>{{ current }}</strong> / {{ total }}
+        </div>
+      </div>
+
+      <div class="article-box mb-4">
+        <p class="fs-5 lh-lg">{{ article.text }}</p>
+
+        <hr />
+
+        <div class="row text-center mt-4">
+          <div class="col-md-6">
+            <h5>Sentyment (Modele)</h5>
+            <span
+              class="badge badge-llm badge-bielik me-2"
+              data-bs-toggle="tooltip"
+              title="{{ article.sentiment_bielik_explanation }}"
+            >
+              Bielik: {{ article.sentiment_bielik }}
+            </span>
+            <span
+              class="badge badge-llm badge-gemma"
+              data-bs-toggle="tooltip"
+              title="{{ article.sentiment_gemma_explanation }}"
+            >
+              Gemma: {{ article.sentiment_gemma }}
+            </span>
+          </div>
+          <div class="col-md-6">
+            <h5>Poglądy (Modele)</h5>
+            <span
+              class="badge badge-llm badge-bielik me-2"
+              data-bs-toggle="tooltip"
+              title="{{ article.political_bias_bielik_explanation }}"
+            >
+              Bielik: {{ article.political_bias_bielik }}
+            </span>
+            <span
+              class="badge badge-llm badge-gemma"
+              data-bs-toggle="tooltip"
+              title="{{ article.political_bias_gemma_explanation }}"
+            >
+              Gemma: {{ article.political_bias_gemma }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <form method="POST" action="{% if dataset %}{% url 'annotate_dataset' dataset.id %}{% else %}{% url 'annotate' %}{% endif %}">
+        {% csrf_token %}
+        <input type="hidden" name="article_id" value="{{ article.id }}" />
+
+        <div class="row mb-4 text-center">
+          <div class="col-md-6">
+            <h4 class="mb-3">Twój wybór: Sentyment</h4>
+            <div class="btn-group" role="group">
+              <input
+                type="radio"
+                class="btn-check"
+                name="sentiment"
+                id="sent_neg"
+                value="negatywny"
+                required
+              />
+              <label class="btn btn-outline-danger" for="sent_neg"
+                >Negatywny</label
+              >
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="sentiment"
+                id="sent_neu"
+                value="neutralny"
+              />
+              <label class="btn btn-outline-secondary" for="sent_neu"
+                >Neutralny</label
+              >
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="sentiment"
+                id="sent_pos"
+                value="pozytywny"
+              />
+              <label class="btn btn-outline-success" for="sent_pos"
+                >Pozytywny</label
+              >
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <h4 class="mb-3">Twój wybór: Poglądy Polityczne</h4>
+            <div class="btn-group" role="group">
+              <input
+                type="radio"
+                class="btn-check"
+                name="political_bias"
+                id="pol_left"
+                value="lewicowe"
+                required
+              />
+              <label class="btn btn-outline-primary" for="pol_left"
+                >Lewicowe</label
+              >
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="political_bias"
+                id="pol_center"
+                value="centrowe"
+              />
+              <label class="btn btn-outline-secondary" for="pol_center"
+                >Centrowe</label
+              >
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="political_bias"
+                id="pol_right"
+                value="prawicowe"
+              />
+              <label class="btn btn-outline-dark" for="pol_right"
+                >Prawicowe</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button type="submit" class="btn-submit">
+            <i class="bi bi-check-lg me-1"></i>Zapisz i przejdź dalej
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Inicjalizacja tooltipów z Bootstrapa
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]'),
+      );
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    </script>
+  </body>
+</html>
