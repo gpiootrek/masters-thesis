@@ -1,21 +1,23 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.router import api_router
-
+import os
+ 
 app = FastAPI(
     title="News Bubble Breaker API",
     description="API do pracy magisterskiej. Architektura wielowarstwowa.",
     version="1.1.0"
 )
 
-# Konfiguracja CORS - niezbędna do połączenia z Angularem
+frontend_url = os.getenv("FRONTEND_URL", "")
+origins = [o.strip() for o in frontend_url.split(",") if o.strip()] if frontend_url else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],  # Domyślny port Angulara
-    allow_credentials=True,
+    allow_origins=origins,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Podpięcie wszystkich endpointów pod globalny prefix /api
 app.include_router(api_router, prefix="/api")
