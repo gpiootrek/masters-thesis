@@ -1,0 +1,38 @@
+// ==========================================
+// Design Tokens & SCSS Variables
+// ==========================================
+
+// --- Colors ---
+$paper: #f9f9f8;
+$ink: #1a1c20;
+$ink-light: #4a4d55;
+$brand-red: #ad4536;
+$surface: #ffffff;
+$border: #e2e4e9;
+
+// --- Bias Colors ---
+$bias-left-bg: #e3edf7;
+$bias-center-bg: #f0eaf5;
+$bias-right-bg: #fbebe9;
+
+// --- Sentiment Colors ---
+$sentiment-pos-bg: #e6f4ea;
+$sentiment-neu-bg: #f1f3f4;
+$sentiment-neg-bg: #fce8e6;
+
+// --- Typography ---
+$font-sans: 'Inter', sans-serif;
+$font-serif: 'Merriweather', serif;
+
+// --- Sentiment Tag Config Maps ---
+$sentiment-colors: (
+  'pozytywny': (bg: $sentiment-pos-bg, color: #166534, border: #dcfce7),
+  'neutralny': (bg: $sentiment-neu-bg, color: #334155, border: #e2e8f0),
+  'negatywny': (bg: $sentiment-neg-bg, color: #991b1b, border: #fee2e2),
+);
+
+$bias-colors: (
+  'lewicowy': (bg: $bias-left-bg, color: #1e40af, border: #dbeafe),
+  'centrowy': (bg: $bias-center-bg, color: #6b21a8, border: #f3e8ff),
+  'prawicowy': (bg: $bias-right-bg, color: #9a3412, border: #ffedd5),
+);

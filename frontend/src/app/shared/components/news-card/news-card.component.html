@@ -1,0 +1,60 @@
+<article class="news-card" [class.large]="isLarge()" [class.is-read]="isRead()">
+  <a [routerLink]="['/news', article().news_id]" class="card-link">
+    <div class="card-content">
+      <div class="card-header">
+        @if (categoryName()) {
+          <span class="category-tag">{{ categoryName() }}</span>
+        } @else {
+          <span class="category-tag">{{ article().label }}</span>
+        }
+        @if (isLarge()) {
+          <span class="score-tag">
+            Trafność: {{ (article().score * 100).toFixed(0) }}%
+          </span>
+        }
+        @if (isRead()) {
+          <span class="read-badge">✓ Przeczytane</span>
+        }
+      </div>
+
+      <h3 class="title">{{ article().title }}</h3>
+      <p class="snippet">{{ article().content }}</p>
+    </div>
+  </a>
+
+  <div class="card-footer">
+    <div class="meta-tags">
+      @if (article().sentiment_bielik) {
+        <span
+          class="tag sentiment"
+          [class]="'sentiment-' + article().sentiment_bielik"
+        >
+          @if (article().sentiment_bielik === 'pozytywny') {
+            <i>&#8599;</i> Pozytywny
+          } @else if (article().sentiment_bielik === 'neutralny') {
+            <i>&#9878;</i> Neutralny
+          } @else {
+            <i>&#8600;</i> Negatywny
+          }
+        </span>
+      }
+      @if (article().political_bias_bielik) {
+        <span
+          class="tag bias"
+          [class]="'bias-' + article().political_bias_bielik"
+        >
+          @if (article().political_bias_bielik === 'lewicowy') {
+            <i>&larr;</i> Lewicowy
+          } @else if (article().political_bias_bielik === 'centrowy') {
+            <i>&harr;</i> Centrum
+          } @else {
+            <i>&rarr;</i> Prawicowy
+          }
+        </span>
+      }
+    </div>
+    <a [routerLink]="['/news', article().news_id]" class="read-more">
+      Czytaj dalej &rarr;
+    </a>
+  </div>
+</article>

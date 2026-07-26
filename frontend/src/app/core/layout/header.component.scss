@@ -1,0 +1,118 @@
+@use '../../shared/styles/variables' as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba($paper, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid $border;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+}
+
+.logo-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logo {
+  font-family: $font-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: $ink;
+  text-decoration: none;
+  letter-spacing: -0.025em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+
+  a {
+    text-decoration: none;
+    color: $ink-light;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $brand-red;
+    }
+  }
+}
+
+.badge {
+  margin-left: 0.25rem;
+  font-size: 0.6rem;
+  background-color: $brand-red;
+  color: white;
+  padding: 0.125rem 0.375rem;
+  border-radius: 9999px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: $ink-light;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $brand-red;
+  }
+}
+
+.dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background-color: $brand-red;
+  border-radius: 50%;
+  border: 2px solid $paper;
+}
+
+.divider {
+  width: 1px;
+  height: 1.5rem;
+  background-color: $border;
+  margin: 0 0.5rem;
+}
+
+.profile-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  border: 1px solid #cbd5e1;
+}
+
+.desktop-only {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: flex;
+  }
+}

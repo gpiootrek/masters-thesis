@@ -1,0 +1,77 @@
+// ==========================================
+// Shared Loading / Error State Styles
+// ==========================================
+@use 'variables' as *;
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 0;
+  gap: 1.5rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid $border;
+  border-top-color: $brand-red;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+
+  &.small {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: 0.95rem;
+  color: $ink-light;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 0;
+  gap: 1rem;
+}
+
+.error-icon {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.error-text {
+  font-size: 0.95rem;
+  color: $ink-light;
+  text-align: center;
+  max-width: 400px;
+}
+
+.retry-btn {
+  margin-top: 0.5rem;
+  padding: 0.625rem 1.5rem;
+  background-color: $brand-red;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

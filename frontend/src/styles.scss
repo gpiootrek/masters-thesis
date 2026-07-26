@@ -1,0 +1,67 @@
+@use 'app/shared/styles/variables' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+
+// ==========================================
+// CSS Custom Properties (for use in templates)
+// ==========================================
+:root {
+  --paper: #{$paper};
+  --ink: #{$ink};
+  --ink-light: #{$ink-light};
+  --brand-red: #{$brand-red};
+  --surface: #{$surface};
+  --border: #{$border};
+
+  --bias-left: #{$bias-left-bg};
+  --bias-center: #{$bias-center-bg};
+  --bias-right: #{$bias-right-bg};
+
+  --sentiment-pos: #{$sentiment-pos-bg};
+  --sentiment-neu: #{$sentiment-neu-bg};
+  --sentiment-neg: #{$sentiment-neg-bg};
+
+  --font-sans: #{$font-sans};
+  --font-serif: #{$font-serif};
+}
+
+// ==========================================
+// Global Reset & Base
+// ==========================================
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $paper;
+  color: $ink;
+  font-family: $font-sans;
+  -webkit-font-smoothing: antialiased;
+}
+
+// ==========================================
+// Layout Utilities
+// ==========================================
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  @media (min-width: 640px) {
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 0 2rem;
+  }
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}

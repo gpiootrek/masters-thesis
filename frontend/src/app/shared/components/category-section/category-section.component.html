@@ -1,0 +1,23 @@
+<section class="category-section container">
+  <div class="section-header">
+    <h2 class="section-title">{{ category().name }}</h2>
+    <div class="controls">
+      <button class="nav-btn" (click)="scroll('left')">&larr;</button>
+      <button class="nav-btn" (click)="scroll('right')">&rarr;</button>
+    </div>
+  </div>
+
+  <div class="carousel-wrapper">
+    <div class="carousel" #carousel>
+      @for (article of category().news; track article.news_id) {
+        <div class="carousel-item">
+          <app-news-card
+            [article]="article"
+            [categoryName]="category().name"
+            [isRead]="readArticleIds().has(article.news_id)"
+          ></app-news-card>
+        </div>
+      }
+    </div>
+  </div>
+</section>

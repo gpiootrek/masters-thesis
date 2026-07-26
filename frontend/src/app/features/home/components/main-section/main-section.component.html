@@ -1,0 +1,28 @@
+<section class="main-section container">
+  <div class="section-header">
+    <h1 class="section-title">Bądź na bieżąco</h1>
+    <span class="subtitle">&#10024; Dobrane dla szerszej perspektywy</span>
+  </div>
+
+  @if (articles().length >= 3) {
+    <div class="grid-layout">
+      <div class="main-article">
+        <app-news-card
+          [article]="articles()[0]"
+          [isLarge]="true"
+          [isRead]="readArticleIds().has(articles()[0].news_id)"
+        ></app-news-card>
+      </div>
+      <div class="side-articles">
+        <app-news-card [article]="articles()[1]" [isRead]="readArticleIds().has(articles()[1].news_id)"></app-news-card>
+        <app-news-card [article]="articles()[2]" [isRead]="readArticleIds().has(articles()[2].news_id)"></app-news-card>
+      </div>
+    </div>
+  } @else if (articles().length > 0) {
+    <div class="grid-layout">
+      @for (article of articles(); track article.news_id) {
+        <app-news-card [article]="article" [isRead]="readArticleIds().has(article.news_id)"></app-news-card>
+      }
+    </div>
+  }
+</section>

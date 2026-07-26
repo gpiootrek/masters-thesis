@@ -1,0 +1,52 @@
+// ==========================================
+// Shared Tag / Badge Styles
+// (sentiment, bias, category)
+// ==========================================
+@use 'sass:map';
+@use 'variables' as *;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  white-space: nowrap;
+
+  i {
+    font-style: normal;
+    font-size: 0.75rem;
+  }
+
+  // Sentiment modifiers
+  @each $name, $cfg in $sentiment-colors {
+    &.sentiment-#{$name} {
+      background-color: map.get($cfg, bg);
+      color: map.get($cfg, color);
+      border-color: map.get($cfg, border);
+    }
+  }
+
+  // Bias modifiers
+  @each $name, $cfg in $bias-colors {
+    &.bias-#{$name} {
+      background-color: map.get($cfg, bg);
+      color: map.get($cfg, color);
+      border-color: map.get($cfg, border);
+    }
+  }
+}
+
+.category-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $brand-red;
+  background-color: rgba($brand-red, 0.05);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}

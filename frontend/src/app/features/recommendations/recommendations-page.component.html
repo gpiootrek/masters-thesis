@@ -1,0 +1,108 @@
+<app-loading-error
+  [isLoading]="isLoading()"
+  [error]="error()"
+  [loadingMessage]="'Ładowanie rekomendacji...'"
+  (retry)="loadRecommendations()"
+>
+  <div class="recommendations-page container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">Moje Rekomendacje</h1>
+      <p class="page-subtitle">
+        Artykuły dobrane przez algorytm AI, aby poszerzyć Twoją perspektywę
+        i przełamać bańkę informacyjną.
+      </p>
+    </div>
+
+    <!-- Diversity Dashboard -->
+    <section class="diversity-dashboard">
+      <div class="dashboard-header">
+        <h2 class="dashboard-title">
+          <span class="dashboard-icon">&#9881;</span>
+          Wskaźnik dywersyfikacji
+        </h2>
+        <p class="dashboard-desc">
+          Mierzy różnorodność Twojego strumienia informacyjnego na podstawie
+          tematów, sentymentu i biasu politycznego.
+        </p>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-labels">
+          <span class="progress-label">Twój aktualny wskaźnik</span>
+          <span class="progress-value">{{ diversityPercent }}%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div
+            class="progress-bar-fill"
+            [style.width.%]="diversityPercent"
+          ></div>
+          @if (potentialPercent > diversityPercent) {
+            <div
+              class="progress-bar-potential"
+              [style.width.%]="potentialPercent"
+            ></div>
+          }
+        </div>
+        @if (diversityGrowth > 0) {
+          <p class="growth-hint">
+            &#10024; Przeczytaj rekomendowane artykuły, aby zwiększyć wskaźnik o
+            <strong>+{{ diversityGrowth }} p.p.</strong> do {{ potentialPercent }}%
+          </p>
+        }
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-value">{{ totalRead() }}</span>
+          <span class="stat-label">Przeczytane artykuły</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{{ diversityPercent }}%</span>
+          <span class="stat-label">Aktualny wskaźnik D</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value highlight">{{ potentialPercent }}%</span>
+          <span class="stat-label">Potencjalny wskaźnik D</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommendations Grid -->
+    @if (totalRead() === 0) {
+      <section class="empty-state">
+        <div class="empty-icon">&#128214;</div>
+        <h3 class="empty-title">Zacznij czytać artykuły</h3>
+        <p class="empty-desc">
+          Aby otrzymać spersonalizowane rekomendacje, przeczytaj najpierw
+          kilka artykułów. Nasz algorytm przeanalizuje Twoje preferencje
+          i zaproponuje treści poszerzające Twój horyzont.
+        </p>
+        <a routerLink="/" class="empty-cta">
+          Przeglądaj artykuły &rarr;
+        </a>
+      </section>
+    } @else {
+      <section class="recommendations-section">
+        <div class="section-header">
+          <h2 class="section-title">Rekomendowane dla Ciebie</h2>
+          <p class="section-subtitle">
+            Artykuły, które najbardziej poszerzą różnorodność Twojego strumienia
+          </p>
+        </div>
+
+        @if (recommendations().length > 0) {
+          <div class="recommendations-grid">
+            @for (article of recommendations(); track article.news_id) {
+              <app-news-card [article]="article"></app-news-card>
+            }
+          </div>
+        } @else {
+          <p class="no-recs">
+            Gratulacje! Twój strumień informacyjny jest już bardzo zróżnicowany.
+          </p>
+        }
+      </section>
+    }
+  </div>
+</app-loading-error>

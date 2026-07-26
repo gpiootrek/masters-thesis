@@ -1,0 +1,171 @@
+@if (isLoading()) {
+  <div class="loading-container container">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Ładowanie artykułu...</p>
+  </div>
+} @else if (error()) {
+  <div class="error-container container">
+    <p class="error-icon">⚠️</p>
+    <p class="error-text">{{ error() }}</p>
+    <a routerLink="/" class="back-link">&larr; Powrót do strony głównej</a>
+  </div>
+} @else if (article()) {
+  <div class="article-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a routerLink="/" class="breadcrumb-link">Strona główna</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">{{ article()!.label }}</span>
+    </nav>
+
+    <div class="article-layout">
+      <!-- Main Article Content -->
+      <article class="article-main">
+        <header class="article-header">
+          <span class="category-tag">{{ article()!.label }}</span>
+          <h1 class="article-title">{{ article()!.title }}</h1>
+          <div class="article-meta">
+            <span class="meta-score">
+              Trafność dopasowania: {{ (article()!.score * 100).toFixed(0) }}%
+            </span>
+          </div>
+        </header>
+
+        <div class="article-body">
+          <p>{{ article()!.content }}</p>
+        </div>
+
+        <!-- Analysis Section -->
+        <section class="analysis-section">
+          <h2 class="analysis-heading">
+            <span class="analysis-icon">&#9881;</span>
+            Analiza NLP
+          </h2>
+
+          <div class="analysis-grid">
+            <!-- Bielik Model -->
+            <div class="analysis-card">
+              <h3 class="model-name">
+                <span class="model-dot bielik"></span>
+                Model Bielik
+              </h3>
+
+              <div class="classification-row">
+                <span class="classification-label">Sentyment:</span>
+                @if (article()!.sentiment_bielik) {
+                  <span class="tag sentiment" [class]="'sentiment-' + article()!.sentiment_bielik">
+                    @if (article()!.sentiment_bielik === 'pozytywny') {
+                      &#8599; Pozytywny
+                    } @else if (article()!.sentiment_bielik === 'neutralny') {
+                      &#9878; Neutralny
+                    } @else {
+                      &#8600; Negatywny
+                    }
+                  </span>
+                } @else {
+                  <span class="tag-na">Brak danych</span>
+                }
+              </div>
+              @if (article()!.sentiment_explanation_bielik) {
+                <p class="explanation">{{ article()!.sentiment_explanation_bielik }}</p>
+              }
+
+              <div class="classification-row">
+                <span class="classification-label">Bias polityczny:</span>
+                @if (article()!.political_bias_bielik) {
+                  <span class="tag bias" [class]="'bias-' + article()!.political_bias_bielik">
+                    @if (article()!.political_bias_bielik === 'lewicowy') {
+                      &larr; Lewicowy
+                    } @else if (article()!.political_bias_bielik === 'centrowy') {
+                      &harr; Centrum
+                    } @else {
+                      &rarr; Prawicowy
+                    }
+                  </span>
+                } @else {
+                  <span class="tag-na">Brak danych</span>
+                }
+              </div>
+              @if (article()!.political_bias_explanation_bielik) {
+                <p class="explanation">{{ article()!.political_bias_explanation_bielik }}</p>
+              }
+            </div>
+
+            <!-- Gemma Model -->
+            <div class="analysis-card">
+              <h3 class="model-name">
+                <span class="model-dot gemma"></span>
+                Model Gemma
+              </h3>
+
+              <div class="classification-row">
+                <span class="classification-label">Sentyment:</span>
+                @if (article()!.sentiment_gemma) {
+                  <span class="tag sentiment" [class]="'sentiment-' + article()!.sentiment_gemma">
+                    @if (article()!.sentiment_gemma === 'pozytywny') {
+                      &#8599; Pozytywny
+                    } @else if (article()!.sentiment_gemma === 'neutralny') {
+                      &#9878; Neutralny
+                    } @else {
+                      &#8600; Negatywny
+                    }
+                  </span>
+                } @else {
+                  <span class="tag-na">Brak danych</span>
+                }
+              </div>
+              @if (article()!.sentiment_explanation_gemma) {
+                <p class="explanation">{{ article()!.sentiment_explanation_gemma }}</p>
+              }
+
+              <div class="classification-row">
+                <span class="classification-label">Bias polityczny:</span>
+                @if (article()!.political_bias_gemma) {
+                  <span class="tag bias" [class]="'bias-' + article()!.political_bias_gemma">
+                    @if (article()!.political_bias_gemma === 'lewicowy') {
+                      &larr; Lewicowy
+                    } @else if (article()!.political_bias_gemma === 'centrowy') {
+                      &harr; Centrum
+                    } @else {
+                      &rarr; Prawicowy
+                    }
+                  </span>
+                } @else {
+                  <span class="tag-na">Brak danych</span>
+                }
+              </div>
+              @if (article()!.political_bias_explanation_gemma) {
+                <p class="explanation">{{ article()!.political_bias_explanation_gemma }}</p>
+              }
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- Recommendations Aside -->
+      <aside class="recommendations-aside">
+        <div class="aside-sticky">
+          <h2 class="aside-title">
+            <span class="aside-icon">&#10024;</span>
+            Poza bańką
+          </h2>
+          <p class="aside-subtitle">Artykuły z innej perspektywy</p>
+
+          @if (recommendationsLoading()) {
+            <div class="aside-loading">
+              <div class="loading-spinner small"></div>
+            </div>
+          } @else if (recommendations().length > 0) {
+            <div class="aside-list">
+              @for (rec of recommendations(); track rec.news_id) {
+                <app-news-card [article]="rec"></app-news-card>
+              }
+            </div>
+          } @else {
+            <p class="aside-empty">Brak rekomendacji dla tego artykułu.</p>
+          }
+        </div>
+      </aside>
+    </div>
+  </div>
+}

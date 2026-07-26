@@ -1,0 +1,14 @@
+@if (isLoading()) {
+  <div class="loading-container container">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">{{ loadingMessage() }}</p>
+  </div>
+} @else if (error()) {
+  <div class="error-container container">
+    <p class="error-icon">⚠️</p>
+    <p class="error-text">{{ error() }}</p>
+    <button class="retry-btn" (click)="onRetry()">Spróbuj ponownie</button>
+  </div>
+} @else {
+  <ng-content></ng-content>
+}

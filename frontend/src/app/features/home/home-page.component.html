@@ -1,0 +1,16 @@
+<app-loading-error
+  [isLoading]="isLoading()"
+  [error]="error()"
+  [loadingMessage]="'Ładowanie artykułów...'"
+  (retry)="loadData()"
+>
+  @if (mainArticles().length > 0) {
+    <app-main-section [articles]="mainArticles()" [readArticleIds]="readArticleIds()"></app-main-section>
+  }
+
+  <div class="categories-container">
+    @for (category of categories(); track category.id) {
+      <app-category-section [category]="category" [readArticleIds]="readArticleIds()"></app-category-section>
+    }
+  </div>
+</app-loading-error>
