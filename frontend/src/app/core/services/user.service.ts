@@ -8,7 +8,7 @@ import { ReadHistoryResponse, RecommendationResponse } from '../../shared/models
 export class UserService {
   private readonly http = inject(HttpClient);
   private readonly platformId = inject(PLATFORM_ID);
-  private readonly apiUrl = '/api/user';
+  private readonly apiUrl = 'https://masters-thesis-py05.onrender.com/api/user';
   private readonly userIdKey = 'horyzonty_user_id';
 
   readonly userId = signal<string | null>(null);

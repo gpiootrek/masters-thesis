@@ -6,7 +6,7 @@ import { NewsBase, NewsDetail } from '../../shared/models/article.model';
 @Injectable({ providedIn: 'root' })
 export class NewsService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'https://masters-thesis-py05.onrender.com';
+  private readonly apiUrl = 'https://masters-thesis-py05.onrender.com/api/news';
 
   getAllNews(skip = 0, limit = 20): Observable<NewsBase[]> {
     const params = new HttpParams()
