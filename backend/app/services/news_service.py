@@ -18,9 +18,7 @@ def get_by_category(category_name: str, skip: int, limit: int):
 def get_random_diverse():
     if news_df.empty:
         return []
-    grouped = news_df.groupby('label').apply(
-        lambda x: x.sample(1)).reset_index(drop=True)
-    diverse_sample = grouped.sample(min(5, len(grouped)))
+    diverse_sample = news_df.groupby('label').sample(1).sample(min(5, news_df['label'].nunique()))
     return [row_to_dict(row) for _, row in diverse_sample.iterrows()]
 
 
