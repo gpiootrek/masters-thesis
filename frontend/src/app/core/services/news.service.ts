@@ -12,7 +12,7 @@ export class NewsService {
     const params = new HttpParams()
       .set('skip', skip)
       .set('limit', limit);
-    return this.http.get<NewsBase[]>(this.apiUrl, { params });
+    return this.http.get<NewsBase[]>(`${this.apiUrl}/`, { params });
   }
 
   getRandomDiverse(): Observable<NewsBase[]> {
