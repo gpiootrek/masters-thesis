@@ -93,7 +93,7 @@
 
         @if (recommendations().length > 0) {
           <div class="recommendations-grid">
-            @for (article of recommendations(); track article.news_id) {
+            @for (article of recommendations(); track article.id) {
               <app-news-card [article]="article"></app-news-card>
             }
           </div>

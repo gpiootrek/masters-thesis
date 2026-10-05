@@ -3,12 +3,13 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { ReadHistoryResponse, RecommendationResponse } from '../../shared/models/article.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private readonly http = inject(HttpClient);
   private readonly platformId = inject(PLATFORM_ID);
-  private readonly apiUrl = 'https://masters-thesis-py05.onrender.com/api/user';
+  private readonly apiUrl = `${environment.apiUrl}/user`;
   private readonly userIdKey = 'horyzonty_user_id';
 
   readonly userId = signal<string | null>(null);

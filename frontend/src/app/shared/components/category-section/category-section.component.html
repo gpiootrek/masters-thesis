@@ -9,12 +9,12 @@
 
   <div class="carousel-wrapper">
     <div class="carousel" #carousel>
-      @for (article of category().news; track article.news_id) {
+      @for (article of category().news; track article.id) {
         <div class="carousel-item">
           <app-news-card
             [article]="article"
             [categoryName]="category().name"
-            [isRead]="readArticleIds().has(article.news_id)"
+            [isRead]="readArticleIds().has(article.id)"
           ></app-news-card>
         </div>
       }

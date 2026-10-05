@@ -1,0 +1,33 @@
+# ---- BACKEND (Python) ----
+backend/venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# ---- FRONTEND (Angular/Node) ----
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- BAZY DANYCH I SYSTEM ----
+*.sqlite3
+*.db
+.DS_Store
+.idea/
+.vscode/
+
+# ---- ENVIRONMENT & SECRETS ----
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.secret

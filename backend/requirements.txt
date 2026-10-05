@@ -1,6 +1,5 @@
-fastapi
-uvicorn
-pandas
-pydantic
-numpy
-asyncpg
+fastapi==0.115.0
+uvicorn==0.32.0
+pandas==2.2.3
+pydantic==2.10.0
+numpy<2.2

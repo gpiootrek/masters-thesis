@@ -15,20 +15,15 @@
     <nav class="breadcrumb">
       <a routerLink="/" class="breadcrumb-link">Strona główna</a>
       <span class="breadcrumb-sep">/</span>
-      <span class="breadcrumb-current">{{ article()!.label }}</span>
+      <span class="breadcrumb-current">{{ article()!.category }}</span>
     </nav>
 
     <div class="article-layout">
       <!-- Main Article Content -->
       <article class="article-main">
         <header class="article-header">
-          <span class="category-tag">{{ article()!.label }}</span>
+          <span class="category-tag">{{ article()!.category }}</span>
           <h1 class="article-title">{{ article()!.title }}</h1>
-          <div class="article-meta">
-            <span class="meta-score">
-              Trafność dopasowania: {{ (article()!.score * 100).toFixed(0) }}%
-            </span>
-          </div>
         </header>
 
         <div class="article-body">
@@ -43,6 +38,48 @@
           </h2>
 
           <div class="analysis-grid">
+            <!-- Ground Truth -->
+            <div class="analysis-card">
+              <h3 class="model-name">
+                <span class="model-dot gt"></span>
+                Adnotacja ekspercka (Ground Truth)
+              </h3>
+
+              <div class="classification-row">
+                <span class="classification-label">Sentyment:</span>
+                @if (article()!.sentiment_gt) {
+                  <span class="tag sentiment" [class]="'sentiment-' + article()!.sentiment_gt">
+                    @if (article()!.sentiment_gt === 'pozytywny') {
+                      &#8599; Pozytywny
+                    } @else if (article()!.sentiment_gt === 'neutralny') {
+                      &#9878; Neutralny
+                    } @else {
+                      &#8600; Negatywny
+                    }
+                  </span>
+                } @else {
+                  <span class="tag-na">Brak danych</span>
+                }
+              </div>
+
+              <div class="classification-row">
+                <span class="classification-label">Bias polityczny:</span>
+                @if (article()!.political_bias_gt) {
+                  <span class="tag bias" [class]="'bias-' + article()!.political_bias_gt">
+                    @if (article()!.political_bias_gt === 'lewicowe') {
+                      &larr; Lewicowe
+                    } @else if (article()!.political_bias_gt === 'centrowe') {
+                      &harr; Centrowe
+                    } @else {
+                      &rarr; Prawicowe
+                    }
+                  </span>
+                } @else {
+                  <span class="tag-na">Brak danych</span>
+                }
+              </div>
+            </div>
+
             <!-- Bielik Model -->
             <div class="analysis-card">
               <h3 class="model-name">
@@ -157,7 +194,7 @@
             </div>
           } @else if (recommendations().length > 0) {
             <div class="aside-list">
-              @for (rec of recommendations(); track rec.news_id) {
+              @for (rec of recommendations(); track rec.id) {
                 <app-news-card [article]="rec"></app-news-card>
               }
             </div>

@@ -3,7 +3,7 @@ import pandas as pd
 from app.db.datastore import news_df, row_to_dict
 
 # Column names used for the entropy calculation
-TOPIC_COL = 'label'
+TOPIC_COL = 'category'
 SENTIMENT_COL = 'sentiment_bielik'
 BIAS_COL = 'political_bias_bielik'
 
@@ -85,7 +85,7 @@ def get_diversity_recommendations(read_article_ids: list[int], count: int = 10) 
     
     # Build current distribution from read articles
     read_set = set(read_article_ids)
-    read_rows = news_df[news_df['news_id'].isin(read_set)]
+    read_rows = news_df[news_df['id'].isin(read_set)]
     
     counts = {}
     for _, row in read_rows.iterrows():
@@ -97,7 +97,7 @@ def get_diversity_recommendations(read_article_ids: list[int], count: int = 10) 
     
     # Get unread articles (exclude rows with null sentiment/bias)
     unread_df = news_df[
-        (~news_df['news_id'].isin(read_set)) &
+        (~news_df['id'].isin(read_set)) &
         (news_df[SENTIMENT_COL].notna()) &
         (news_df[BIAS_COL].notna())
     ].copy()
@@ -114,11 +114,11 @@ def get_diversity_recommendations(read_article_ids: list[int], count: int = 10) 
     
     for _ in range(min(count, len(unread_df))):
         # Group remaining unread by TSP combo
-        available = unread_df[~unread_df['news_id'].isin(selected_ids)]
+        available = unread_df[~unread_df['id'].isin(selected_ids)]
         if available.empty:
             break
         
-        tsp_groups = available.groupby('_tsp')['news_id'].apply(list).to_dict()
+        tsp_groups = available.groupby('_tsp')['id'].apply(list).to_dict()
         
         best_delta = -float('inf')
         best_combo = None
@@ -152,7 +152,7 @@ def get_diversity_recommendations(read_article_ids: list[int], count: int = 10) 
     # Build response
     recommended_articles = []
     for nid in selected_ids:
-        row = news_df[news_df['news_id'] == nid]
+        row = news_df[news_df['id'] == nid]
         if not row.empty:
             recommended_articles.append(row_to_dict(row.iloc[0]))
     
@@ -167,18 +167,18 @@ def get_bubble_breaking_recommendations(news_id: int):
     if news_df.empty:
         return []
 
-    target_news = news_df[news_df['news_id'] == news_id]
+    target_news = news_df[news_df['id'] == news_id]
     if target_news.empty:
         return None
 
     target_row = target_news.iloc[0]
-    target_label = target_row['label']
+    target_label = target_row['category']
     target_sentiment = target_row['sentiment_bielik']
     target_bias = target_row['political_bias_bielik']
 
-    candidates = news_df[news_df['news_id'] != news_id]
+    candidates = news_df[news_df['id'] != news_id]
 
-    condition_same_topic = candidates['label'] == target_label
+    condition_same_topic = candidates['category'] == target_label
     condition_diff_perspective = (candidates['sentiment_bielik'] != target_sentiment) | (
         candidates['political_bias_bielik'] != target_bias)
 
@@ -187,7 +187,7 @@ def get_bubble_breaking_recommendations(news_id: int):
 
     if len(recommended_df) < 5:
         shortfall = 5 - len(recommended_df)
-        filler_condition = (candidates['label'] == target_label) & ~candidates.index.isin(
+        filler_condition = (candidates['category'] == target_label) & ~candidates.index.isin(
             recommended_df.index)
         filler_df = candidates[filler_condition].sample(
             min(shortfall, len(candidates[filler_condition])))

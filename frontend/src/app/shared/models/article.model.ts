@@ -1,13 +1,14 @@
 export interface NewsBase {
-  news_id: number;
+  id: number;
   title: string;
   content: string;
-  label: string;
-  score: number;
+  category: string;
   sentiment_bielik: string | null;
   political_bias_bielik: string | null;
   sentiment_gemma: string | null;
   political_bias_gemma: string | null;
+  sentiment_gt: string | null;
+  political_bias_gt: string | null;
 }
 
 export interface NewsDetail extends NewsBase {

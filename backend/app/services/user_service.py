@@ -24,5 +24,5 @@ def get_read_articles_data(user_id: str) -> list[dict]:
         return []
     
     # Filter rows based on the history
-    read_rows = news_df[news_df['news_id'].isin(history)]
+    read_rows = news_df[news_df['id'].isin(history)]
     return [row_to_dict(row) for _, row in read_rows.iterrows()]

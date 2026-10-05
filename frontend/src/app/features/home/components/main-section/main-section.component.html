@@ -10,18 +10,18 @@
         <app-news-card
           [article]="articles()[0]"
           [isLarge]="true"
-          [isRead]="readArticleIds().has(articles()[0].news_id)"
+          [isRead]="readArticleIds().has(articles()[0].id)"
         ></app-news-card>
       </div>
       <div class="side-articles">
-        <app-news-card [article]="articles()[1]" [isRead]="readArticleIds().has(articles()[1].news_id)"></app-news-card>
-        <app-news-card [article]="articles()[2]" [isRead]="readArticleIds().has(articles()[2].news_id)"></app-news-card>
+        <app-news-card [article]="articles()[1]" [isRead]="readArticleIds().has(articles()[1].id)"></app-news-card>
+        <app-news-card [article]="articles()[2]" [isRead]="readArticleIds().has(articles()[2].id)"></app-news-card>
       </div>
     </div>
   } @else if (articles().length > 0) {
     <div class="grid-layout">
-      @for (article of articles(); track article.news_id) {
-        <app-news-card [article]="article" [isRead]="readArticleIds().has(article.news_id)"></app-news-card>
+      @for (article of articles(); track article.id) {
+        <app-news-card [article]="article" [isRead]="readArticleIds().has(article.id)"></app-news-card>
       }
     </div>
   }

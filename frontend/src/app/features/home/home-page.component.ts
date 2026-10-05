@@ -59,7 +59,7 @@ export class HomePageComponent implements OnInit {
   }
 
   private buildCategories(articles: NewsBase[]): Category[] {
-    const labelSet = new Set(articles.map(n => n.label));
+    const labelSet = new Set(articles.map(n => n.category));
     const categories: Category[] = [];
 
     for (const label of labelSet) {
@@ -67,7 +67,7 @@ export class HomePageComponent implements OnInit {
         id: label,
         name: getCategoryDisplayName(label),
         icon: getCategoryIcon(label),
-        news: articles.filter(n => n.label === label),
+        news: articles.filter(n => n.category === label),
       });
     }
 
