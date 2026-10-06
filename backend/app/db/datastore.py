@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 # Ścieżka relatywna do pliku z danymi
-DATA_PATH = os.path.join(os.path.dirname(__file__), "../../../../data/news_sample_24s_annotated.csv")
+DATA_PATH = os.path.join(os.path.dirname(__file__), "../../data/news_sample_24s_annotated.csv")
 
 def load_data():
     try:
