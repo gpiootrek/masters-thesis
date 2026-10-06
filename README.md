@@ -2,6 +2,8 @@
 
 > Author: Piotr Gołąb
 
+> [Live version](https://masters-thesis-xi.vercel.app/) 
+
 ## Overview
 This repository contains the source code and documentation for a master's thesis project focused on mitigating the filter bubble effect in modern media consumption. The system is a web-based news aggregator that utilizes Large Language Models (LLMs) to classify news articles by political bias and sentiment. By providing transparent categorization and algorithmic recommendations, the application aims to expose users to diverse perspectives and broaden their informational horizons.
 
